@@ -4,13 +4,13 @@
 
 **2. 编写DOM元素**
 
-(```)
+```html
 <video id="azuremediaplayer" class="azuremediaplayer amp-default-skin amp-big-play-centered" tabindex="0"></video>
-(```)
+```
 
 **3.实例化播放控件，并且使用参数进行播放**
 
-(```)
+```javascript
 var myOptions = {
      autoplay: true,
      controls: true,
@@ -35,8 +35,8 @@ myPlayer.src([
         ]
       }
     ])
-(```)
+```
 
-*authenticationToken 和 src为后台提供的参数 *
+* `authenticationToken` 和 `src`为后台提供的参数 *
 
 
