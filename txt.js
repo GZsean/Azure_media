@@ -1,62 +1,167 @@
-function detectBrowser() {
-    var userAgent = window.navigator.userAgent,
-        browserName,
-        version;
+const categories = (function () {
+  let now = new Date();
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+    now = new Date(+now - 2000);
+  }
+  return res;
+})();
+const categories2 = (function () {
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.push(10 - len - 1);
+  }
+  return res;
+})();
+const data = (function () {
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.push(Math.round(Math.random() * 1000));
+  }
+  return res;
+})();
+const data2 = (function () {
+  let res = [];
+  let len = 0;
+  while (len < 10) {
+    res.push(+(Math.random() * 10 + 5).toFixed(1));
+    len++;
+  }
+  return res;
+})();
 
-    if (userAgent.match(/Chrome|Chromium/)) {
-        browserName = "Google Chrome";
-    } else if (userAgent.match(/Safari/) && !userAgent.match(/Chrome|Chromium/)) {
-        browserName = "Safari";
-    } else if (userAgent.match(/360SE/)) {
-        browserName = "360 Browser";
-    } else if (userAgent.match(/OPR/)) {
-        browserName = "Opera";
-    } else if (userAgent.match(/Firefox/)) {
-        browserName = "Firefox";
-    } else if (userAgent.match(/Edg/)) {
-        browserName = "Microsoft Edge";
-    } else if (userAgent.match(/Trident|MSIE/)) {
-        browserName = "Internet Explorer";
-    } else if (userAgent.match(/MicroMessenger/)) {
-        browserName = "WeChat Browser";
-    } else {
-        browserName = "Unknown";
+const data3 = (function () {
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.push(Math.round(Math.random() * 1000));
+  }
+  return res;
+})();
+const data4 = (function () {
+  let res = [];
+  let len = 0;
+  while (len < 10) {
+    res.push(+(Math.random() * 10 + 5).toFixed(1));
+    len++;
+  }
+  return res;
+})();
+option = {
+  title: {
+    text: 'Dynamic Data'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#283b56'
+      }
     }
-
-    // 获取版本号
-    if (browserName === "Safari") {
-        version = userAgent.match(/Version\/([\d.]+)/);
-    } else if (browserName === "Chrome") {
-        version = userAgent.match(/(?:Chrome|Chromium)\/([\d.]+)/);
-    } else if (browserName === "360 Browser") {
-        version = userAgent.match(/(?:QIHU|360EE|360SE|360)\s?Browser\/([\d.]+)/);
-    } else if (browserName === "Opera") {
-        version = userAgent.match(/OPR\/([\d.]+)/);
-    } else if (browserName === "Firefox") {
-        version = userAgent.match(/Firefox\/([\d.]+)/);
-    } else if (browserName === "Microsoft Edge") {
-        version = userAgent.match(/Edg\/([\d.]+)/);
-    } else if (browserName === "Internet Explorer") {
-        version = userAgent.match(/(?:Trident|MSIE)\/([\d.]+)/);
-    } else if (browserName === "WeChat Browser") {
-        version = userAgent.match(/MicroMessenger\/([\d.]+)/);
-    } else {
-        version = "Unknown";
+  },
+  legend: {},
+  toolbox: {
+    show: true,
+    feature: {
+      dataView: { readOnly: false },
+      restore: {},
+      saveAsImage: {}
     }
-
-    if (version && version.length > 1) {
-        version = version[1];
-    } else {
-        version = "Unknown";
+  },
+  dataZoom: {
+    show: false,
+    start: 0,
+    end: 100
+  },
+  xAxis: [
+    {
+      type: 'category',
+      boundaryGap: true,
+      data: categories
+    },
+    {
+      type: 'category',
+      boundaryGap: true,
+      data: categories2
     }
-
-    return {
-        browser: browserName,
-        version: version
-    };
-}
-
-// 使用方法
-var browserInfo = detectBrowser();
-console.log("Browser:", browserInfo.browser);
-console.log("Version:", browserInfo.version);
+  ],
+  yAxis: [
+    {
+      type: 'value',
+      scale: true,
+      name: 'Price',
+      max: 30,
+      min: 0,
+      boundaryGap: [0.2, 0.2]
+    },
+    {
+      type: 'value',
+      scale: true,
+      name: 'Order',
+      max: 1200,
+      min: 0,
+      boundaryGap: [0.2, 0.2]
+    }
+  ],
+  series: [
+    {
+      name: 'Dynamic Bar',
+      type: 'bar',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      data: data
+    },
+    {
+      name: 'Dynamic Line',
+      type: 'line',
+      data: data2
+    },
+    {
+      name: 'Dynamic Bar2',
+      type: 'bar',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      data: data3
+    },
+    {
+      name: 'Dynamic Line2',
+      type: 'line',
+      data: data4
+    }
+  ]
+};
+app.count = 11;
+setInterval(function () {
+  let axisData = new Date().toLocaleTimeString().replace(/^\D*/, '');
+  data.shift();
+  data.push(Math.round(Math.random() * 1000));
+  data2.shift();
+  data2.push(+(Math.random() * 10 + 5).toFixed(1));
+  categories.shift();
+  categories.push(axisData);
+  categories2.shift();
+  categories2.push(app.count++);
+  myChart.setOption({
+    xAxis: [
+      {
+        data: categories
+      },
+      {
+        data: categories2
+      }
+    ],
+    series: [
+      {
+        data: data
+      },
+      {
+        data: data2
+      }
+    ]
+  });
+}, 2100);
