@@ -3,6 +3,8 @@ jest.mock('react-redux',  () =>  ({
   useDispatch: jest.fn(),
 }));
 
+import * as actions from './action/UserDetail-action';
+
   // 模拟 action 函数
   const fetchDataMock = jest.spyOn(actions, 'fetchUserInfo').mockImplementation(() => {
     return async (dispatch) => {
