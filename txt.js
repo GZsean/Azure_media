@@ -6,4 +6,5 @@
 .ant-color-picker-color-block {
   width: 50px !important;
   height: 50px !important;
+  border: 1px solid #ccc;
 }
