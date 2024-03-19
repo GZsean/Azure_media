@@ -1,16 +1,68 @@
-
-
-.ant-color-picker-trigger {
-  border: none;
-  width: 50px !important;
-  height: 50px !important;
-  padding: 0 !important;
-}
-.ant-color-picker-color-block {
-  width: 50px !important;
-  height: 50px !important;
-  border: 1px solid #ccc;
-}
-.ant-color-picker-trigger-active {
-  border: none !important;
-}
+import React from "react";
+import "./index.css";
+import { Col, ColorPicker, Divider, Row, Space, theme } from "antd";
+import { generate, green, presetPalettes, red, cyan } from "@ant-design/colors";
+const genPresets = (presets = presetPalettes) =>
+  Object.entries(presets).map(([label, colors]) => ({
+    colors,
+  }));
+const HorizontalLayoutDemo = () => {
+  const { token } = theme.useToken();
+  const presets = genPresets({
+    color: ["#ff0000", "#00ff00", "#0000ff"],
+  });
+  const customPanelRender = (_, { components: { Picker, Presets } }) => (
+    <div style={{ width: "200px" }}>
+      <div>
+        <Picker />
+      </div>
+      <div>
+        <Presets />
+      </div>
+    </div>
+  );
+  return (
+    <ColorPicker
+      defaultValue={token.colorPrimary}
+      styles={{
+        popupOverlayInner: {
+          width: 200,
+        },
+      }}
+      presets={presets}
+      panelRender={customPanelRender}
+    />
+  );
+};
+const BasicDemo = () => (
+  <ColorPicker
+    defaultValue="#1677ff"
+    panelRender={(panel) => (
+      <div className="custom-panel">
+        <div
+          style={{
+            fontSize: 12,
+            color: "rgba(0, 0, 0, 0.88)",
+            lineHeight: "20px",
+            marginBottom: 8,
+          }}
+        >
+          Color Picker
+        </div>
+        {panel}
+      </div>
+    )}
+  />
+);
+export default () => (
+  <Space direction="vertical">
+    <Space>
+      <span>Add title:</span>
+      <BasicDemo />
+    </Space>
+    <Space>
+      <span>Horizontal layout:</span>
+      <HorizontalLayoutDemo />
+    </Space>
+  </Space>
+);
