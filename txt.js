@@ -34,32 +34,9 @@ const HorizontalLayoutDemo = () => {
     />
   );
 };
-const BasicDemo = () => (
-  <ColorPicker
-    defaultValue="#1677ff"
-    panelRender={(panel) => (
-      <div className="custom-panel">
-        <div
-          style={{
-            fontSize: 12,
-            color: "rgba(0, 0, 0, 0.88)",
-            lineHeight: "20px",
-            marginBottom: 8,
-          }}
-        >
-          Color Picker
-        </div>
-        {panel}
-      </div>
-    )}
-  />
-);
+
 export default () => (
   <Space direction="vertical">
-    <Space>
-      <span>Add title:</span>
-      <BasicDemo />
-    </Space>
     <Space>
       <span>Horizontal layout:</span>
       <HorizontalLayoutDemo />
