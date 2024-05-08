@@ -155,50 +155,6 @@ option = {
       },
       data: [150, 232, 201, 154, 190, 330, 410]
     },
-    {
-      name: 'Search Engine',
-      type: 'bar',
-      data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-      emphasis: {
-        focus: 'series'
-      },
-    },
-    {
-      name: 'Baidu',
-      type: 'bar',
-      barWidth: 5,
-      stack: 'Search Engine',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [620, 732, 701, 734, 1090, 1130, 1120]
-    },
-    {
-      name: 'Google',
-      type: 'bar',
-      stack: 'Search Engine',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [120, 132, 101, 134, 290, 230, 220]
-    },
-    {
-      name: 'Bing',
-      type: 'bar',
-      stack: 'Search Engine',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [60, 72, 71, 74, 190, 130, 110]
-    },
-    {
-      name: 'Others',
-      type: 'bar',
-      stack: 'Search Engine',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [62, 82, 91, 84, 109, 110, 120]
-    }
+    
   ]
 };
