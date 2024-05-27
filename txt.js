@@ -1,3 +1,5 @@
+[...(new Set(a.map(n => Number.isNaN(n)? NaN : JSON.stringify(n))))].map(n => Number.isNaN(n) ? NaN: (n？JSON.parse(n):n) )
+
 const { createRoot } = ReactDOM;
 
 const {  Table  } = antd;
