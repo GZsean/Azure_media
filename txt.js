@@ -1,162 +1,59 @@
 [...(new Set(a.map(n => Number.isNaN(n)? NaN : JSON.stringify(n))))].map(n => Number.isNaN(n) ? NaN: (n？JSON.parse(n):n) )
 
-const { createRoot } = ReactDOM;
 
-const {  Table  } = antd;
-// In the fifth row, other columns are merged into first column
-// by setting it's colSpan to be 0
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    render: (text) => <a>{text}</a>,
-    colSpan: 2,
-  },
-  {
-    title: 'Phone',
-    colSpan: 0,
-    dataIndex: 'phone',
- 
-  },
-  {
-    title: 'Home phone',
-    colSpan: 4,
-    dataIndex: 'tel',
-    
-  },
-  {
-    title: 'Phone',
-    colSpan: 0,
-    dataIndex: 'phone',
- 
-  },
-  {
-    title: 'Phone',
-    colSpan: 0,
-    dataIndex: 'phone',
- 
-  },
-  {
-    title: 'Phone',
-    colSpan: 0,
-    dataIndex: 'phone',
- 
-  },
+
+var nodes = [
+    { name: 'Log on', x: 0, y: 300, symbolSize: 20, itemStyle: { color: '#ff4500' } },
+    { name: 'OIL1', x: 200, y: 200, symbolSize: 20, itemStyle: { color: '#32cd32' } },
+    { name: 'OIL2', x: 200, y: 300, symbolSize: 20, itemStyle: { color: '#32cd32' } },
+    { name: 'OIL3', x: 200, y: 400, symbolSize: 20, itemStyle: { color: '#32cd32' } },
+    { name: 'CM1', x: 400, y: 200, symbolSize: 20, itemStyle: { color: '#ff4500' } },
+    { name: 'CM2', x: 400, y: 300, symbolSize: 20, itemStyle: { color: '#32cd32' } },
+    { name: 'CM3', x: 400, y: 400, symbolSize: 20, itemStyle: { color: '#32cd32' } },
+    { name: 'OPP', x: 600, y: 300, symbolSize: 20, itemStyle: { color: '#32cd32' } }
 ];
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    tel: '0571-22098909',
-    phone: 18889898989,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    tel: '0571-22098333',
-    phone: 18889898888,
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    tel: '0575-22098909',
-    phone: 18900010002,
-    address: 'Sydney No. 1 Lake Park',
-  },
-  {
-    key: '4',
-    name: 'Jim Red',
-    age: 18,
-    tel: '0575-22098909',
-    phone: 18900010002,
-    address: 'London No. 2 Lake Park',
-  },
-  {
-    key: '5',
-    name: 'Jake White',
-    age: 18,
-    tel: '0575-22098909',
-    phone: 18900010002,
-    address: 'Dublin No. 2 Lake Park',
-  },
+
+var links = [
+    { source: 'Log on', target: 'OIL1' },
+    { source: 'Log on', target: 'OIL2' },
+    { source: 'Log on', target: 'OIL3' },
+    { source: 'OIL1', target: 'CM1' },
+    { source: 'OIL2', target: 'CM2' },
+    { source: 'OIL3', target: 'CM3' },
+    { source: 'CM1', target: 'OPP' },
+    { source: 'CM2', target: 'OPP' },
+    { source: 'CM3', target: 'OPP' }
 ];
-const App = () => <Table columns={columns} dataSource={data} bordered />;
-const ComponentDemo = App;
 
+var option = {
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'none',
+                symbolSize: 50,
+                roam: true,
+                label: {
+                    show: true,
+                    position: 'left'
+                },
+                data: nodes,
+                links: links,
+                lineStyle: {
+                    opacity: 0.9,
+                    width: 2,
+                    curveness: 0
+                }
+            }
+        ]
+    };
 
-createRoot(mountNode).render(<ComponentDemo />);
+if (option && typeof option === 'object') {
+  myChart.setOption(option);
+}
 
-
-                             ---------------------------------------end----------------------------------
-
-
-option = {
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
-  legend: {},
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: [
-    {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    }
-  ],
-  yAxis: [
-    {
-      type: 'value'
-    }
-  ],
-  series: [
-    {
-      name: 'Direct',
-      type: 'bar',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [320, 332, 301, 334, 390, 330, 320]
-    },
-    {
-      name: 'Email',
-      type: 'bar',
-      stack: 'Ad',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [120, 132, 101, 134, 90, 230, 210]
-    },
-    {
-      name: 'Union Ads',
-      type: 'bar',
-      stack: 'Ad',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [220, 182, 191, 234, 290, 330, 310]
-    },
-    {
-      name: 'Video Ads',
-      type: 'bar',
-      stack: 'Ad',
-      emphasis: {
-        focus: 'series'
-      },
-      data: [150, 232, 201, 154, 190, 330, 410]
-    },
-    
-  ]
-};
+window.addEventListener('resize', myChart.resize);
