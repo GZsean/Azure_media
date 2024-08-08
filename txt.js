@@ -130,7 +130,6 @@ function generateGraphData(apiData) {
     }
   }
 
-  // Starting point for the root element
   processElement(apiData, 0, baseY);
 
   return { nodes, links };
