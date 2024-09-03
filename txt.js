@@ -1,6 +1,160 @@
 [...(new Set(a.map(n => Number.isNaN(n)? NaN : JSON.stringify(n))))].map(n => Number.isNaN(n) ? NaN: (n？JSON.parse(n):n) )
 
+// table----------------
 
+import React, { useRef, useState, useEffect } from 'react';
+import './index.css';
+import { SearchOutlined } from '@ant-design/icons';
+import { Button, Input, Space, Table, Checkbox } from 'antd';
+import Highlighter from 'react-highlight-words';
+const filterList = {
+  option1: ['Apple1', 'Pear1', 'Orange1'],
+  option2: ['Apple2', 'Pear2', 'Orange2'],
+};
+const dataSource = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+  },
+  {
+    key: '2',
+    name: 'Joe Black',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+  },
+];
+const dataSource2 = [
+  {
+    key: '3',
+    name: 'Jim Green',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+  },
+  {
+    key: '4',
+    name: 'Jim Red',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  },
+  {
+    key: '5',
+    name: 'Jim Red',
+    age: 32,
+    address: 'London No. 2 Lake Park',
+  }
+]
+const App = () => {
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <div style={{ padding: 8 }}>
+          <div>
+          <Checkbox.Group
+            options={filters.option1}
+            value={selectedKeys}
+            onChange={(values) => setSelectedKeys(values)}
+          />
+          </div>
+          <Button
+            type="primary"
+            onClick={() => fetchData(dataSource2)}
+            size="small"
+            style={{ marginTop: 8 }}
+          >
+            OK
+          </Button>
+        </div>
+      ),
+      onFilter: (value, record) => record.name.includes(value),
+    },
+    {
+      title: 'address',
+      dataIndex: 'address',
+      key: 'address',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={filters.option2}
+            value={selectedKeys}
+            onChange={(values) => setSelectedKeys(values)}
+          />
+          <Button
+            type="primary"
+            onClick={() => fetchData(dataSource2)}
+            size="small"
+            style={{ marginTop: 8 }}
+          >
+            OK
+          </Button>
+        </div>
+      ),
+      onFilter: (value, record) => record.name.includes(value),
+    },
+  ];
+
+  useEffect(() => {
+    fetchData();
+  }, [filters]);
+
+  const fetchData = async (data) => {
+    //SelectedKeys value logic
+    setLoading(true);
+    try {
+      if(data){
+        setData(data)
+      }else{
+        setData(dataSource);
+      }
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchFilterOptions = () => {
+    //此处call筛选项
+    const result = filterList;
+    setFilters(result);
+  };
+
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      loading={loading}
+      onHeaderRow={(columns) => {
+        if (filters) {
+          console.log('1d');
+          fetchFilterOptions();
+        }
+      }}
+    />
+  );
+};
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+//table-----------------
 
 
 //---------latest----------------
