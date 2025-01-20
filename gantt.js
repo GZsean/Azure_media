@@ -1,8 +1,3 @@
-'use client';
-
-import React, { useEffect, useRef } from 'react';
-import * as echarts from 'echarts';
-
 const GanttChart = ({ data }) => {
     const chartRef = useRef(null);
 
@@ -11,7 +6,7 @@ const GanttChart = ({ data }) => {
 
         if (chartRef.current) {
             chart = echarts.getInstanceByDom(chartRef.current) || echarts.init(chartRef.current);
-            
+
             const categories = [];
             const series = [];
             let categoryIndex = 0;
@@ -24,10 +19,28 @@ const GanttChart = ({ data }) => {
 
                 group.tasks.forEach((task) => {
                     categories.push({ name: task.name, level: 1, isParent: false });
-                    const subCategoryIndex = categoryIndex + 1;
-                    
+                });
+
+                categoryIndex += 1 + group.tasks.length;
+            });
+
+            // Reverse the categories for the desired order
+            categories.reverse();
+
+            // Map original indices to reversed indices
+            const categoryMap = new Map();
+            categories.forEach((item, index) => {
+                categoryMap.set(item.name, index);
+            });
+
+            // Rebuild the series with updated subCategoryIndex
+            data.forEach((group) => {
+                group.tasks.forEach((task) => {
+                    const subCategoryIndex = categoryMap.get(task.name);
+
                     series.push({
                         type: 'custom',
+                        name:'',
                         renderItem: (params, api) => {
                             const start = api.coord([api.value(1), subCategoryIndex]);
                             const end = api.coord([api.value(2), subCategoryIndex]);
@@ -42,7 +55,7 @@ const GanttChart = ({ data }) => {
                                     height: height,
                                 },
                                 style: {
-                                    fill: task.color,
+                                    fill: api.value(3),
                                     stroke: '#000',
                                     lineWidth: 1,
                                 },
@@ -56,9 +69,11 @@ const GanttChart = ({ data }) => {
                             subCategoryIndex,
                             new Date(phase.start).getTime(),
                             new Date(phase.end).getTime(),
+                            phase.color,
+                            phase.text,
                         ]),
                     });
-                    
+
                     if (task.milestones) {
                         task.milestones.forEach((milestone) => {
                             series.push({
@@ -71,19 +86,17 @@ const GanttChart = ({ data }) => {
                         });
                     }
                 });
-
-                categoryIndex += 1 + group.tasks.length;
             });
-            
+
             const option = {
                 tooltip: {
                     formatter: (params) => {
                         if (params.seriesType === 'scatter') {
-                            return '关键点';
+                            return '';
                         }
                         const start = new Date(params.value[1]).toLocaleString();
                         const end = new Date(params.value[2]).toLocaleString();
-                        return `${params.seriesName}<br/>开始: ${start}<br/>结束: ${end}`;
+                        return `${params.value[4]? params.value[4]:''}${params.seriesName}<br/>end: ${start}<br/>end: ${end}`;
                     },
                 },
                 grid: {
@@ -107,11 +120,11 @@ const GanttChart = ({ data }) => {
                     type: 'category',
                     data: categories.map((item) =>
                         item.isParent
-                            ? `{bold|${item.name}}`
-                            : `   ${item.name}`
+                            ? `{bold|${item.name}}                           `
+                            : `${item.name}`
                     ),
                     axisLabel: {
-                        align: 'left',
+                        align: 'right',
                         margin: 10,
                         rich: {
                             bold: { fontWeight: 'bold' },
@@ -121,7 +134,6 @@ const GanttChart = ({ data }) => {
                 },
                 series: series,
             };
-
             chart.setOption(option);
             window.addEventListener('resize', () => chart.resize());
 
@@ -135,57 +147,3 @@ const GanttChart = ({ data }) => {
 };
 
 export default GanttChart;
-
-
-
-
-'use client';
-
-import React from 'react';
-import GanttChart from "@/components/Gantt/GanttChart";
-
-
-const GanttPage = () => {
-    const ganttData = [
-        {
-            name: 'CDMS',
-            tasks: [
-                {
-                    name: 'RB Batch',
-                    phases: [
-                        { start: '2024-01-08T20:00', end: '2024-01-08T23:00' },
-                    ],
-                    color: '#3498db',
-                },
-            ],
-        },
-        {
-            name: 'MCA', 
-            tasks: [
-                {
-                    name: 'CL Batch',
-                    phases: [
-                        { start: '2024-01-08T22:00', end: '2024-01-09T01:00' },
-                    ],
-                    color: '#f1c40f',
-                },
-                {
-                    name: 'DM_CL',
-                    phases: [
-                        { start: '2024-01-09T03:00', end: '2024-01-09T05:00' },
-                    ],
-                    color: '#2ecc71',
-                },
-            ],
-        },
-    ];
-
-    return (
-        <div>
-            <h1 className="text-xl font-bold mb-4 text-center">甘特图</h1>
-            <GanttChart data={ganttData} />
-        </div>
-    );
-};
-
-export default GanttPage;
