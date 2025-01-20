@@ -1,3 +1,8 @@
+'use client';
+
+import React, { useEffect, useRef } from 'react';
+import * as echarts from 'echarts';
+
 const GanttChart = ({ data }) => {
     const chartRef = useRef(null);
 
@@ -45,21 +50,36 @@ const GanttChart = ({ data }) => {
                             const start = api.coord([api.value(1), subCategoryIndex]);
                             const end = api.coord([api.value(2), subCategoryIndex]);
                             const height = api.size([0, 1])[1] * 0.6;
+                            const text = api.value(4)
 
                             return {
-                                type: 'rect',
-                                shape: {
-                                    x: start[0],
-                                    y: start[1] - height / 2,
-                                    width: end[0] - start[0],
-                                    height: height,
-                                },
-                                style: {
-                                    fill: api.value(3),
-                                    stroke: '#000',
-                                    lineWidth: 1,
-                                },
-                            };
+                                type:'group',
+                                children:[{
+                                    type: 'rect',
+                                    shape: {
+                                        x: start[0],
+                                        y: start[1] - height / 2,
+                                        width: end[0] - start[0],
+                                        height: height,
+                                    },
+                                    style: {
+                                        fill: api.value(3),
+                                        stroke: '#000',
+                                        lineWidth: 1,
+                                    },
+                                }, {
+                                    type: 'text',
+                                    style: {
+                                        x: (start[0] + end[0]) / 2,
+                                        y: start[1],
+                                        text: text || '',
+                                        fill: '#FFF',
+                                        textAlign: 'center',
+                                        textVerticalAlign: 'middle',
+                                        fontSize: 10,
+                                        fontWeight: 'bold',
+                                    },
+                                }]} ;
                         },
                         encode: {
                             x: [1, 2],
